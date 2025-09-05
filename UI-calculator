@@ -1,0 +1,179 @@
+# html code for calculator
+
+<!DOCTYPE html>
+<html>
+<head>
+ 
+  <title>Calculator</title>
+  <link rel="stylesheet" href="calculator.css">
+  
+</head>
+<body>
+  <div class="calculator">
+    <div class="display" id="display">0</div>
+    <div class="buttons">
+      <button class="btn operator">C</button>
+      <button class="btn operator">÷</button>
+      <button class="btn operator">×</button>
+      <button class="btn operator">−</button>
+     
+
+      <button class="btn">7</button>
+      <button class="btn">8</button>
+      <button class="btn">9</button>
+      <button class="btn operator">+</button>
+      
+
+      <button class="btn">4</button>
+      <button class="btn">5</button>
+      <button class="btn">6</button>
+      <button class="btn equal">=</button>
+     
+    
+
+      <button class="btn">1</button>
+      <button class="btn">2</button>
+      <button class="btn">3</button>
+      <button class="btn">0</button>
+      <button class="btn">00</button>
+      <button class="btn">.</button>
+    
+    </div>
+  </div>
+  
+    <script src="calculator.js"></script>
+</body>
+</html>
+
+
+# css code for calculator
+
+body {
+  background-color: #f0f0f0;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.calculator {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  width: 320px;
+}
+
+.display {
+  background-color: #111;
+  color: white;
+  font-size: 2.5rem;
+  text-align: right;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 60px);
+  gap: 10px;
+}
+
+
+.btn {
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+
+.operator {
+  background-color: #ff9500;
+  color: white;
+}
+
+.equal {
+  background-color: #34c759;
+  color: white;
+}
+
+.btn:not(.operator):not(.equal) {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+
+.btn.operator:nth-child(8) { 
+  grid-column: 4;
+  grid-row: 2 / span 2;
+}
+
+.equal {
+  grid-column: 4;
+  grid-row: 4 / span 2;
+}
+
+# javascript for calculator
+
+const display = document.getElementById('display');
+const buttons = document.querySelectorAll('.btn');
+
+
+let currentInput = '';
+let resetNext = false;
+
+buttons.forEach(button => 
+  {
+  button.addEventListener('click', () => 
+    {
+    const value = button.textContent;
+
+    if (value === 'C') 
+      {
+      currentInput = '';
+      display.textContent = '0';
+
+    } 
+    else if (value === '=')
+   {
+      try 
+
+      {
+        
+        const expression = currentInput
+          .replace(/×/g, '*')
+          .replace(/÷/g, '/')
+          .replace(/−/g, '-');
+
+        const result = eval(expression);
+        display.textContent = result;
+        currentInput = result.toString();
+        resetNext = true;
+      } 
+      catch 
+      {
+        display.textContent = 'Error';
+        currentInput = '';
+      }
+    }
+     else 
+      {
+      if (resetNext)
+         {
+        currentInput = '';
+        resetNext = false;
+      }
+      currentInput += value;
+      display.textContent = currentInput;
+    }
+  });
+});
